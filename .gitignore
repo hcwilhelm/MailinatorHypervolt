@@ -1,0 +1,40 @@
+# Generic
+.DS_Store
+*.class
+*.log
+venv/
+.venv
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+.jvmopts
+hydra.sbt
+hydra.log
+**/*.hydra
+hydra-timings.csv
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+/.idea/
+
+# emacs and friends
+/.ensime
+/.ensime_cache
+/ensime.sbt
+/.projectile
+
+.bsp
+.bloop
+.metals
+.vscode
+metals.sbt
+project/metals.sbt
