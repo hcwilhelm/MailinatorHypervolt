@@ -1,10 +1,12 @@
 package model
 
-import zio.json.{DeriveJsonDecoder, DeriveJsonEncoder}
+import io.getquill.MappedEncoding
+import zio.json.{ JsonDecoder, JsonEncoder }
 
-final case class Mailbox(name: String) extends AnyVal
+final case class Mailbox(name: String)
 
 object Mailbox {
-  implicit val mailboxEncoder = DeriveJsonEncoder.gen[Mailbox]
-  implicit val mailboxDecoder = DeriveJsonDecoder.gen[Mailbox]
+  implicit val messageContentEncoder = JsonEncoder[String].contramap[Mailbox](_.name)
+  implicit val messageContentDecoder = JsonDecoder[String].map(Mailbox(_))
+  implicit val dBEncoder             = MappedEncoding[String, Mailbox](Mailbox(_))
 }

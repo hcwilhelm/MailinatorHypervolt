@@ -14,4 +14,4 @@ CREATE TABLE IF NOT EXISTS message_table(
     created_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-CREATE INDEX idx_pagination on message_table(id, created_at);
+CREATE INDEX idx_id_created_at on message_table(id, created_at);

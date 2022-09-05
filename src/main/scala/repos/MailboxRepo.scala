@@ -18,5 +18,3 @@ object MailboxRepo {
 
   def mailboxes = ZIO.serviceWithZIO[MailboxRepo](_.mailboxes)
 }
-
-
