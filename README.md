@@ -11,7 +11,7 @@ I choosed to use ZIO 2.0 as the main framework to implement this task.
 - ZIO-JSON
 - ZIO-QUILL (with H2 in memory DB)
 
-The server is running fully concurrent any race conditions are handled by the transactional nature of H2 in-memory DB running. Also a
+The server is running fully concurrent any race conditions are handled by the transactional nature of H2 in-memory DB. Also a
 message garbage collector is running concurrently and deletes messages which are older than the retention time.
 
 ## Running test
@@ -55,11 +55,11 @@ I assume the server is started up and ready to receive requests.
 
 ``http GET localhost:8080/mailboxes/foobar/messages``
 
-### Query a Messages my Id 
+### Query a Messages by Id 
 
 ``http GET localhost:8080/mailboxes/foobar/messages/50a055ac-f81b-48ef-b69c-ddb7365020bf``
 
-### Delete a Message my Id
+### Delete a Message by Id
 
 ``http DELETE localhost:8080/mailboxes/foobar/messages/08e5a936-6fe7-419b-a35d-594b4be2bd6a``
 
