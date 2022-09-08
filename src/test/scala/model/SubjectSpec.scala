@@ -7,7 +7,7 @@ import zio.test.{ZIOSpecDefault, assertTrue}
 object SubjectSpec extends ZIOSpecDefault {
 
   private val subject = Subject("foo")
-  private val subjectJson = s"\"${subject.value}\""
+  private val subjectJson = s"\"${subject.v}\""
 
   def spec = suite("SubjectSpec")(
     test("Encode Subject to json") {

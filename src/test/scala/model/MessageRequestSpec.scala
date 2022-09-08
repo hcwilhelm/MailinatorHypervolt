@@ -14,8 +14,8 @@ object MessageRequestSpec extends ZIOSpecDefault {
   private val messageRequestWithOptionalFields = MessageRequest(sender, Some(subject), Some(messageContent))
   private val messageRequestWithoutOptionalFields = MessageRequest(sender, None, None)
 
-  private val senderJsonWithSubjectAndMessage = s"""{"sender":"${sender.value}","subject":"${subject.value}","message":"${messageContent.value}"}"""
-  private val senderJsonWithOutSubjectAndMessage = s"""{"sender":"${sender.value}"}"""
+  private val senderJsonWithSubjectAndMessage = s"""{"sender":"${sender.v}","subject":"${subject.v}","message":"${messageContent.v}"}"""
+  private val senderJsonWithOutSubjectAndMessage = s"""{"sender":"${sender.v}"}"""
 
   def spec = suite("MessageRequestSpec")(
     test("Encode MessageRequest with optional fields to json") {

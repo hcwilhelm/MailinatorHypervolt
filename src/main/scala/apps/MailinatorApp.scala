@@ -2,6 +2,7 @@ package apps
 
 import java.util.UUID
 import model.{ Mailbox, MessageId, MessageRequest }
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException
 import repos.{ MailboxRepo, MessageRepo }
 import zhttp.http._
 import zio._
@@ -39,12 +40,22 @@ object MailinatorApp {
                               case Left(error)           =>
                                 ZIO.debug(s"Failed to parse input: $error").as(Response.status(Status.BadRequest))
                               case Right(messageRequest) =>
-                                MessageRepo.insert(Mailbox(name), messageRequest).as(Response.status(Status.Created))
+                                MessageRepo
+                                  .insert(Mailbox(name), messageRequest)
+                                  .map(id => Response.json(id.toJson))
+                                  .catchSome {
+                                    case _: JdbcSQLIntegrityConstraintViolationException =>
+                                      ZIO.succeed(
+                                        Response
+                                          .json(s"""{"error": "Mailbox $name dose not exist"}""")
+                                          .setStatus(Status.Conflict)
+                                      )
+                                  }
                             }
         } yield response
 
       // GET /mailboxes/{email address}/messages
-      case (Method.GET -> !! / "mailbox" / name / "messages")          => for {
+      case (Method.GET -> !! / "mailboxes" / name / "messages")        => for {
           messages <- MessageRepo.getByMailbox(Mailbox(name))
         } yield Response.json(messages.toJson)
 

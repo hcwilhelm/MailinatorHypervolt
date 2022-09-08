@@ -6,7 +6,7 @@ import zio.test._
 
 object SenderSpec extends ZIOSpecDefault {
   private val sender = Sender("foo")
-  private val senderJson = s"\"${sender.value}\""
+  private val senderJson = s"\"${sender.v}\""
 
   def spec = suite("SenderSpec")(
     test("Encode Sender to json") {

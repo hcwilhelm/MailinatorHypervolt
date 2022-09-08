@@ -50,6 +50,5 @@ class H2MailboxRepo(ds: DataSource) extends MailboxRepo {
 object H2MailboxRepo {
   final case class MailboxTable(name: String, createdAt: Instant)
 
-  def layer: ZLayer[Any, Throwable, H2MailboxRepo] =
-    Quill.DataSource.fromPrefix("MailinatorApp") >>> ZLayer.fromFunction(new H2MailboxRepo(_))
+  def layer: ZLayer[DataSource, Nothing, H2MailboxRepo] = ZLayer.fromFunction(new H2MailboxRepo(_))
 }

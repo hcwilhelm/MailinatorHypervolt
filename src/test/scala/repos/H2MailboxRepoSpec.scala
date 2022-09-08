@@ -1,11 +1,13 @@
 package repos
 
+import io.getquill.jdbczio.Quill
 import model.Mailbox
 import zio.test.{ZIOSpecDefault, _}
 import zio._
 
 object H2MailboxRepoSpec extends ZIOSpecDefault {
 
+  private val dataSourceLayer = Quill.DataSource.fromPrefix("MailinatorApp")
   private def moveClock(seconds: Int) = TestClock.adjust(Duration.fromSeconds(seconds))
 
   def spec = suite("H2MailboxRepoSpec")(
@@ -36,5 +38,5 @@ object H2MailboxRepoSpec extends ZIOSpecDefault {
         result <- MailboxRepo.mailboxes
       } yield assertTrue(result == List(Mailbox("bar"), Mailbox("foo")))
     },
-  ).provideLayerShared(H2MailboxRepo.layer)
+  ).provideLayerShared(dataSourceLayer >>> H2MailboxRepo.layer)
 }

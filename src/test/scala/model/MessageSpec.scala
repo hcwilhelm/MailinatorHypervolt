@@ -20,8 +20,8 @@ object MessageSpec extends ZIOSpecDefault {
   private val messageWithOptionalFields = Message(messageId, mailbox, sender, Some(subject), Some(messageContent), createdAt)
   private val messageWithoutOptionalFields = Message(messageId, mailbox, sender, None, None, createdAt)
 
-  private val senderJsonWithSubjectAndMessage = s"""{"id":"${messageId.value}","mailbox":"${mailbox.name}","sender":"${sender.value}","subject":"${subject.value}","message":"${messageContent.value}","createdAt":"${createdAt.toString}"}"""
-  private val senderJsonWithOutSubjectAndMessage = s"""{"id":"${messageId.value}","mailbox":"${mailbox.name}","sender":"${sender.value}","createdAt":"${createdAt.toString}"}"""
+  private val senderJsonWithSubjectAndMessage = s"""{"id":"${messageId.v}","mailbox":"${mailbox.name}","sender":"${sender.v}","subject":"${subject.v}","message":"${messageContent.v}","createdAt":"${createdAt.toString}"}"""
+  private val senderJsonWithOutSubjectAndMessage = s"""{"id":"${messageId.v}","mailbox":"${mailbox.name}","sender":"${sender.v}","createdAt":"${createdAt.toString}"}"""
 
   def spec = suite("MessageSpec")(
     test("Encode Message with optional fields to json") {

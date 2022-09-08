@@ -1,6 +1,5 @@
 package repos
 
-import io.getquill.jdbczio.Quill
 import io.getquill.{ H2ZioJdbcContext, SnakeCase }
 import java.time.Instant
 import java.util.UUID
@@ -27,9 +26,9 @@ class H2MessageRepo(ds: DataSource) extends MessageRepo {
                            MessageTable(
                              uuid,
                              mailbox.name,
-                             message.sender.value,
-                             message.subject.map(_.value),
-                             message.message.map(_.value),
+                             message.sender.v,
+                             message.subject.map(_.v),
+                             message.message.map(_.v),
                              createdAt
                            )
                          )
@@ -42,7 +41,7 @@ class H2MessageRepo(ds: DataSource) extends MessageRepo {
     ctx
       .run {
         query[MessageTable]
-          .filter(_.id == lift(messageId.value))
+          .filter(_.id == lift(messageId.v))
           .map(row =>
             Message(
               MessageId(row.id),
@@ -78,7 +77,7 @@ class H2MessageRepo(ds: DataSource) extends MessageRepo {
   override def deleteById(messageId: MessageId): Task[Unit] =
     ctx
       .run {
-        query[MessageTable].filter(_.id == lift(messageId.value)).delete
+        query[MessageTable].filter(_.id == lift(messageId.v)).delete
       }
       .provide(dsLayer)
       .unit
@@ -112,17 +111,7 @@ class H2MessageRepo(ds: DataSource) extends MessageRepo {
       .unit
 
   implicit final class InstantOps(i: Instant) {
-    def >(other: Instant) = quote(sql"$i > $other".asCondition)
-
     def <(other: Instant) = quote(sql"$i < $other".asCondition)
-
-    def ===(other: Instant) = quote(sql"$i == $other".asCondition)
-
-    def >=(right: Instant) = quote(sql"$i >= $right".asCondition)
-
-    def <=(other: Instant) = quote(sql"$i <= $other".asCondition)
-
-    def between(min: Instant, max: Instant) = quote(sql"$i BETWEEN $min AND $max".asCondition)
   }
 }
 
@@ -136,6 +125,5 @@ object H2MessageRepo {
     createdAt: Instant
   )
 
-  def layer: ZLayer[Any, Throwable, H2MessageRepo] =
-    Quill.DataSource.fromPrefix("MailinatorApp") >>> ZLayer.fromFunction(new H2MessageRepo(_))
+  def layer: ZLayer[DataSource, Nothing, H2MessageRepo] = ZLayer.fromFunction(new H2MessageRepo(_))
 }

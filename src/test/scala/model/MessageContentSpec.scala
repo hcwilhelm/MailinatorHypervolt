@@ -7,7 +7,7 @@ import zio.test._
 object MessageContentSpec extends ZIOSpecDefault {
 
   private val content = MessageContent("fooBar")
-  private val contentJson = s"\"${content.value}\""
+  private val contentJson = s"\"${content.v}\""
 
   def spec = suite("MessageContentSpec")(
     test("Encode MessageContent to json") {
